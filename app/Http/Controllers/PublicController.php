@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Schema;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PublicController extends Controller
 {
     public function index()
     {
-        $posts = Schema::hasTable('posts')
-            ? Post::query()->simplePaginate(16)
-            : new LengthAwarePaginator([], 0, 16, 1);
+        $posts = Post::simplePaginate(16);
 
         return view('welcome', compact('posts'));
     }
@@ -25,6 +22,5 @@ class PublicController extends Controller
 
     public function post(Post $post) {
         return view('post', compact('post'));
-
     }
 }
