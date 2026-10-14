@@ -7,9 +7,9 @@
                     </figure> --}}
             <div class="card-body">
                 <h2 class="card-title">{{ $post->title }}</h2>
-                <p>{{ nl2br($post->body) }}</p>
+                <p>{!! $post->displayBody !!}</p>
                 <div class="card-actions justify-end">
-                    {{-- <a href="/post?id={{ $post->id }}" class="btn btn-primary">Read more</a> --}}
+                    
                 </div>
             </div>
         </div>
