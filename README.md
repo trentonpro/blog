@@ -16,3 +16,4 @@
 15. after generating the key run the command "php artisan migrate"
 16. finally, run composer run dev in your terminal to start the development environment
 
+php artisan --seed - genereerib artikleid

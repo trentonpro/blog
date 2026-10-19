@@ -13,7 +13,10 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index():
+    {
+        $posts = 
+    }
     {
         $posts = Post::latest()->paginate(16);
 
