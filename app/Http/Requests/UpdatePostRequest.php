@@ -12,7 +12,7 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // @todo make secure latatata later
+        // @todo make secure in future
         return true;
     }
 
@@ -24,8 +24,8 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string'],
+            'title' => 'required',
+            'body' => 'nullable',
         ];
     }
 }

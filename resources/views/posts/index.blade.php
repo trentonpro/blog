@@ -22,11 +22,12 @@
                             <div class="join">
                                 <a href="{{ route('posts.show', $post) }}" class="btn btn-info">View</a>
                                 <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning">Edit</a>
-                                <button form="delete-form-{{ $post->id }}" class="btn btn-error">Delete</button>
+                                <button form="delete-form-{{ $post->id }}" type="submit" class="btn btn-error">Delete</button>
                             </div>
-                            <form id="delete-form-{{ $post->id  }}" action="{{ route('posts.destroy', $post) }}" method="POST" style="display: none;">
-                                @csrf
-                                @method('DELETE')
+                            <form id="delete-form-{{ $post->id }}" action="{{ route('posts.destroy', $post) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')        
+                            </form>
                         </td>
                     </tr>
                 @endforeach
