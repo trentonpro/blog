@@ -8,15 +8,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PublicController extends Controller
 {
-    public function index()
-    {
-        $posts = Post::simplePaginate(16);
-
+    public function index() {
+        $posts = Post::latest()->simplePaginate(16);
         return view('welcome', compact('posts'));
     }
 
-    public function buttons()
-    {
+    public function buttons() {
         return view('buttons');
     }
 

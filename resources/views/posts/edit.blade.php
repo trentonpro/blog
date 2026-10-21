@@ -2,7 +2,7 @@
 @section('content')
     <div class="container mx-auto">
 
-        <form action="{{ route('posts.update', $post) }}" method="POST" class="card bg-base-300 shadow-sm w-2/3 mx-auto p-3">
+        <form action="{{route('posts.update', $post)}}" method="POST" class="card bg-base-300 shadow-sm w-2/3 mx-auto p-3">
             @csrf
             @method('PUT')
             <fieldset class="fieldset">
@@ -14,7 +14,7 @@
             </fieldset>
             <fieldset class="fieldset">
                 <legend class="fieldset-legend">Content</legend>
-                <textarea name="body" class="textarea h-36 w-full @error('body') textarea-error @enderror" placeholder="Some content here">{{ old('body') ?? $post->body }}</textarea>
+                <textarea name="body" class="textarea h-36 w-full @error('body') textarea-error @enderror" placeholder="Some content here">{{ old('body') ?? $post->title }}</textarea>
                 @error('body')
                     <p class="label text-error">{{$message}}</p>
                 @enderror
