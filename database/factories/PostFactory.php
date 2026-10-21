@@ -17,9 +17,21 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $created = fake()->dateTimeBetween();
+        $updated = fake()->dateTimeBetween($created);
+        if(rand(0, 9)){
+            $updated = $created;
+        }
+
+        $imageurl = null;
+        if(rand(0, 9)){
+            $imageurl = 'https://picsum.photos/seed/'.fake()->uuid().'/1280/960';
+        }
         return [
             'title' => fake()->sentence(),
             'body' => fake()->paragraphs(6, true),
+            'created_at' => $created,
+            'updated_at' => $updated,
         ];
     }
 }
