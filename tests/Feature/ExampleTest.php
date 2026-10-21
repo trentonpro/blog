@@ -1,7 +1,7 @@
 <?php
 
-it('returns a successful response', function () {
+it('renders the homepage with posts', function () {
     $response = $this->get('/');
 
-    $response->assertStatus(200);
+    $response->assertViewHas('posts');
 });

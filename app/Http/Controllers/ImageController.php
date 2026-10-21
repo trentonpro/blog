@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Image;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateImageRequest;
+use App\Models\Image;
 
 class ImageController extends Controller
 {
@@ -63,8 +63,4 @@ class ImageController extends Controller
     {
         //
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 83a15dc86e24ae1c8e4859fff5071065c75f580e

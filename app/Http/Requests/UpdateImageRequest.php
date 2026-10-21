@@ -26,8 +26,4 @@ class UpdateImageRequest extends FormRequest
             //
         ];
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 83a15dc86e24ae1c8e4859fff5071065c75f580e

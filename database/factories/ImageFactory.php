@@ -18,14 +18,7 @@ class ImageFactory extends Factory
     public function definition(): array
     {
         return [
-<<<<<<< HEAD
-            //
+            'path' => 'https://picsum.photos/seed/'.fake()->uuid().'/1280/960',
         ];
     }
 }
-=======
-            'path' => 'https://picsum.photos/seed/'. fake()->uuid() .'/1280/960',
-        ];
-    }
-}
->>>>>>> 83a15dc86e24ae1c8e4859fff5071065c75f580e

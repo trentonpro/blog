@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Image;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ImagePolicy
 {
@@ -63,8 +62,4 @@ class ImagePolicy
     {
         return false;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 83a15dc86e24ae1c8e4859fff5071065c75f580e
