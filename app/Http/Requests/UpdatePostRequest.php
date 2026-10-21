@@ -24,8 +24,8 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required',
-            'body' => 'nullable',
+            'title' => ['required', 'string', 'max:255'],
+            'body' => ['required', 'string'],
         ];
     }
 }

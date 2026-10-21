@@ -14,7 +14,7 @@
             </fieldset>
             <fieldset class="fieldset">
                 <legend class="fieldset-legend">Content</legend>
-                <textarea name="body" class="textarea h-36 w-full @error('body') textarea-error @enderror" placeholder="Some content here">{{ old('body') ?? $post->title }}</textarea>
+                <textarea name="body" class="textarea h-36 w-full @error('body') textarea-error @enderror" placeholder="Some content here">{{ old('body') ?? $post->body }}</textarea>
                 @error('body')
                     <p class="label text-error">{{$message}}</p>
                 @enderror

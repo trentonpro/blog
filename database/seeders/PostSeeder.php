@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use RuntimeException;
 
 class PostSeeder extends Seeder
 {
@@ -14,10 +14,25 @@ class PostSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::select('id')->get();
-        $posts = Post::factory(1000)->make()->sortBy('created_at');
-        foreach($posts as $post) {
-            $post->user_id = $users->random()->id;
+        $userIds = User::query()->pluck('id');
+
+        if ($userIds->isEmpty()) {
+            throw new RuntimeException('Run UserSeeder before PostSeeder.');
+        }
+
+        Post::query()->whereNull('user_id')->chunkById(100, function ($posts) use ($userIds): void {
+            foreach ($posts as $post) {
+                $post->user_id = $userIds->random();
+                $post->save();
+            }
+        });
+
+        $postsToCreate = max(0, 1000 - Post::query()->count());
+        $posts = Post::factory($postsToCreate)
+            ->state(fn (array $attributes): array => ['user_id' => $userIds->random()])
+            ->make()
+            ->sortBy('created_at');
+        foreach ($posts as $post) {
             $post->save();
         }
     }

@@ -6,18 +6,19 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Image;
 use App\Models\Post;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+use RuntimeException;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): View
     {
-        /** @var App\Models\User $user */
-        $user = Auth::user();
+        $user = $request->user();
         $posts = $user->posts()->latest()->paginate(16);
 
         return view('posts.index', compact('posts'));
@@ -26,7 +27,7 @@ class PostController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('posts.create');
     }
@@ -34,21 +35,18 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request): RedirectResponse
     {
-        $post = new Post($request->validated());
-        // $post->title = $request->input('title');
-        // $post->body = $request->input('body');
-        $post->user()->associate(Auth::user());
-        $post->save();
-        foreach ($request->file('images') as $file) {
-            $image = $file->store('', ['disk' => 'public']);
-            $url = Storage::url($image);
+        $post = $request->user()->posts()->create($request->safe()->only(['title', 'body']));
 
-            $image = new Image;
-            $image->path = $url;
-            $image->post()->associate($post);
-            $image->save();
+        foreach ($request->file('images', []) as $file) {
+            $path = $file->store('posts', 'public');
+
+            if ($path === false) {
+                throw new RuntimeException('Unable to store the uploaded post image.');
+            }
+
+            $post->images()->save(new Image(['path' => $path]));
         }
 
         return redirect()->route('posts.index');
@@ -59,6 +57,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $post->load(['user', 'images', 'comments.user']);
+
         return view('posts.show', compact('post'));
     }
 
