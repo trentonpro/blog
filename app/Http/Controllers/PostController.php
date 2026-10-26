@@ -6,6 +6,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Image;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -29,7 +30,8 @@ class PostController extends Controller
      */
     public function create(): View
     {
-        return view('posts.create');
+        $tags = Tag::all();
+        return view('posts.create', compact('tags'));
     }
 
     /**
@@ -48,6 +50,8 @@ class PostController extends Controller
 
             $post->images()->save(new Image(['path' => $path]));
         }
+
+        $post->tags()->attach($request->input('tags'));
 
         return redirect()->route('posts.index');
     }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/buttons', [PublicController::class, 'buttons'])->name('buttons');
 Route::get('/post/{post}', [PublicController::class, 'post'])->name('post');
+Route::get('/user/{user}', [PublicController::class, 'user'])->name('user');
 Route::post('/post/{post}/comments', [CommentController::class, 'store'])
     ->middleware('auth')
     ->name('comments.store');

@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 
 class PublicController extends Controller
 {
     public function index()
     {
-        $posts = Post::with(['user', 'images'])->latest()->simplePaginate(16);
+        $posts = Post::with('images', 'user', 'tags')->withCount('comments')->latest()->simplePaginate(16);
 
+        return view('welcome', compact('posts'));
+    }
+
+    public function user(User $user) {
+        $posts = $user->posts()->with('images', 'user', 'tags')->withCount('comments')->latest()->simplePaginate(16);
         return view('welcome', compact('posts'));
     }
 
