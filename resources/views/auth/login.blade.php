@@ -1,47 +1,42 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+@extends('partials.layout')
+@section('content')
+    <main class="mx-auto my-6 w-full max-w-lg px-4">
+        <div class="card bg-base-200 shadow-sm">
+            <div class="card-body">
+                <h1 class="card-title">@lang('Log in')</h1>
+                @if (session('status'))
+                    <div role="status" class="alert alert-success">{{ session('status') }}</div>
+                @endif
+                <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-4">
+                    @csrf
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend"><label for="email">@lang('Email')</label></legend>
+                        <input id="email" name="email" type="email" value="{{ old('email') }}"
+                            class="input w-full @error('email') input-error @enderror" required autofocus autocomplete="username">
+                        @error('email')
+                            <p class="label text-error">{{ $message }}</p>
+                        @enderror
+                    </fieldset>
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend"><label for="password">@lang('Password')</label></legend>
+                        <input id="password" name="password" type="password"
+                            class="input w-full @error('password') input-error @enderror" required autocomplete="current-password">
+                        @error('password')
+                            <p class="label text-error">{{ $message }}</p>
+                        @enderror
+                    </fieldset>
+                    <label class="label" for="remember_me">
+                        <input id="remember_me" type="checkbox" name="remember" class="checkbox" @checked(old('remember'))>
+                        @lang('Remember me')
+                    </label>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button type="submit" class="btn btn-primary">@lang('Log in')</button>
+                        @if (Route::has('password.request'))
+                            <a href="{{ route('password.request') }}" class="btn btn-link">@lang('Forgot your password?')</a>
+                        @endif
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    </main>
+@endsection
