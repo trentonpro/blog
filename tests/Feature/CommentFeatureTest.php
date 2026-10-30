@@ -16,7 +16,7 @@ test('a signed-in user can add a comment to a post', function () {
         'body' => 'This is a comment.',
     ]);
 
-    $response->assertRedirect(route('post', $post).'#comments');
+    $response->assertRedirect(route('post', $post));
     $this->assertDatabaseHas('comments', [
         'post_id' => $post->id,
         'user_id' => $user->id,
@@ -26,7 +26,7 @@ test('a signed-in user can add a comment to a post', function () {
     $this->get(route('post', $post))
         ->assertSee('This is a comment.')
         ->assertSee('Comment author')
-        ->assertSee('October 19, 2026');
+        ->assertSee('October 19, 2026 05:56');
 });
 
 test('a guest cannot add a comment', function () {
@@ -42,9 +42,12 @@ test('an empty comment is rejected without saving', function () {
     $post = Post::factory()->create();
 
     $response = $this->actingAs(User::factory()->create())
+        ->from(route('post', $post))
         ->post(route('comments.store', $post), ['body' => '']);
 
+    $response->assertRedirect(route('post', $post));
     $response->assertSessionHasErrors('body');
+    $this->get(route('post', $post))->assertSee(route('comments.store', $post));
     $this->assertDatabaseCount('comments', 0);
 });
 
